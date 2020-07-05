@@ -1,7 +1,7 @@
 'use strict';
 
 const wellsPlateGenerator = require('./index');
-
+/*
 let configuration = {
   parameters: {
     extracts: [
@@ -30,6 +30,29 @@ let configuration = {
     },
     { extract: { value: 'extract1', id: 1 }, concentration: 0.333, id: 12 },
     { extract: { value: 'extract2', id: 2 }, concentration: 0.333, id: 22 },
+  ],
+};
+*/
+
+let configuration = {
+  parameters: {
+    extracts: ['extract1', 'extract2', 'extract3', 'extract4', 'extract5'],
+    concentration: [0.666, 0.333, 0.165],
+    strain: ['strain1', 'strain2'],
+  },
+  controls: [
+    {
+      strain: 'strain1',
+      concentration: 0.333,
+      id: 11,
+    },
+    {
+      strain: 'strain2',
+      concentration: 0.333,
+      id: 22,
+    },
+    { extract: 'extract1', concentration: 0.333, id: 12 },
+    { extract: 'extract2', concentration: 0.333, id: 22 },
   ],
 };
 

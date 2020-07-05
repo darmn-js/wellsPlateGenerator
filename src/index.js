@@ -23,6 +23,8 @@ class wellsPlateGenerator {
       columns = 10,
       replicates = 1,
       plates = 2,
+      initPlate = 0,
+      accountPreviousWells = true,
       color = undefined,
       random = false,
       direction = 'vertical',
@@ -31,7 +33,10 @@ class wellsPlateGenerator {
     let currentList = [];
     let samplesList = [];
     let parameters = configuration.parameters;
-    let controls = configuration.controls;
+    let controls =
+      typeof configuration.controls[0] === 'object'
+        ? configuration.controls
+        : [];
     parameters = Object.entries(parameters);
     // Builds samples list
     for (let i = 0; i < parameters.length; i++) {
@@ -73,6 +78,8 @@ class wellsPlateGenerator {
         rows: String(rows),
         columns: String(columns),
         plates: plates,
+        initPlate: initPlate,
+        accountPreviousWells: accountPreviousWells,
       },
       { direction: direction },
     );
@@ -171,6 +178,10 @@ function builtPlate(samplesList, labelsList) {
 function createWellLabels(config, options = {}) {
   let { direction = 'vertical' } = options;
   const plates = config.plates;
+  const initPlate = config.initPlate;
+  const accountPreviousWells = config.accountPreviousWells;
+  delete config.accountPreviousWells;
+  delete config.initPlate;
   let entries = Object.entries(config);
   for (let i = 0; i < entries.length; i++) {
     if (Number.isNaN(parseInt(entries[i][1]))) {
@@ -190,13 +201,18 @@ function createWellLabels(config, options = {}) {
   let [rows, columns] = [entries[0][1], entries[1][1]];
   if (Number.isInteger(rows[0]) && Number.isInteger(columns[0])) {
     let rod = direction === 'vertical' ? rows : columns;
-    for (let u = 0; u < plates; u++) {
+    for (let u = initPlate; u < initPlate + plates; u++) {
       for (let i = 0; i < rows.length; i++) {
         let row = [];
         for (let j = 0; j < columns.length; j++) {
           let [rowIndex, columnIndex] =
             direction === 'vertical' ? [i, j] : [j, i];
-          row[j] = `${u + 1}-${columnIndex * rod.length + rod[rowIndex]}`;
+          let factor = accountPreviousWells
+            ? u * rows.length * columns.length
+            : 0;
+          row[j] = `${u + 1}-${
+            factor + (columnIndex * rod.length + rod[rowIndex])
+          }`;
         }
         labelsList.push(...row);
       }
@@ -204,7 +220,7 @@ function createWellLabels(config, options = {}) {
   } else {
     [rows, columns] =
       direction === 'vertical' ? [rows, columns] : [columns, rows];
-    for (let u = 0; u < plates; u++) {
+    for (let u = initPlate; u < initPlate + plates; u++) {
       for (let i = 0; i < rows.length; i++) {
         let row = [];
         for (let j = 0; j < columns.length; j++) {
