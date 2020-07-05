@@ -1,0 +1,47 @@
+{
+  "name": "wellsPlateGenerator",
+  "version": "0.0.0",
+  "description": "Samples generator",
+  "main": "src/index.js",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "scripts": {
+    "eslint": "eslint src",
+    "eslint-fix": "npm run eslint -- --fix",
+    "test": "npm run test-coverage && npm run eslint",
+    "test-coverage": "jest --coverage",
+    "test-only": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cheminfo/wellsPlateGenerator.git"
+  },
+  "keywords": [],
+  "author": "Javier I Osorio M",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cheminfo/wellsPlateGenerator/issues"
+  },
+  "homepage": "https://github.com/cheminfo/wellsPlateGenerator#readme",
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "prettier": {
+    "arrowParens": "always",
+    "semi": true,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "all"
+  },
+  "devDependencies": {
+    "eslint": "^7.4.0",
+    "eslint-config-cheminfo": "^4.0.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jest": "^23.17.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "jest": "^26.1.0",
+    "prettier": "^2.0.5"
+  }
+}
