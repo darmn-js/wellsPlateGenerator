@@ -108,15 +108,15 @@ class wellsPlateGenerator {
         wells.push(labelsList[order[counter]]);
         counter++;
       }
-      samplesList[i] = Object.assign({}, samplesList[i], {
+      samplesList[i] = {
         wells: wells,
+        experiment: samplesList[i],
         color: color[i],
-        _highlight: Math.random(),
-      });
+        _highlight: counter,
+      };
       wells = [];
     }
     let wellsList = builtPlate(samplesList, labelsList, nbRows, nbColumns);
-
     this.samplesList = samplesList;
     this.wellsList = wellsList;
   }
@@ -153,7 +153,7 @@ function builtPlate(samplesList, labelsList) {
       obj = Object.assign(
         {},
         {
-          well: samplesList[i] ? `${label}` : labelsList[i],
+          position: samplesList[i] ? `${label}` : labelsList[i],
           plate: samplesList[i].wells[j].split('-')[0],
           replicate: j,
         },
@@ -167,8 +167,10 @@ function builtPlate(samplesList, labelsList) {
     return array[
       array.findIndex(function (x) {
         let element =
-          typeof x.well === 'string' ? `${String(labelsList[index])}` : index;
-        return element === x.well;
+          typeof x.position === 'string'
+            ? `${String(labelsList[index])}`
+            : index;
+        return element === x.position;
       })
     ];
   });
